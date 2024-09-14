@@ -1,6 +1,3 @@
-# Let's write the content to a README.md file in markdown format
-
-markdown_content = """
 # AWS Lambda with PostgreSQL (RDS) Integration Guide
 
 This guide walks through how to configure an AWS Lambda function that interacts with a PostgreSQL database hosted on Amazon RDS. It covers essential AWS services such as RDS, VPC, Security Groups, IAM Roles, API Gateway, and more, focusing on console-based setup.
