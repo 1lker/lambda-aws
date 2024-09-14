@@ -1,0 +1,210 @@
+{
+    "info": {
+      "name": "Lambda Function Tests",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Insert User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\"\n}"
+          },
+          "url": {
+            "raw": "https://i4vbr4vudzcjg3i2pnomm6bvla0nittj.lambda-url.eu-central-1.on.aws/insert",
+            "protocol": "https",
+            "host": [
+              "i4vbr4vudzcjg3i2pnomm6bvla0nittj",
+              "lambda-url",
+              "eu-central-1",
+              "on",
+              "aws"
+            ],
+            "path": [
+              "insert"
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Response has correct structure\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('message');",
+                "    pm.expect(jsonData).to.have.property('user');",
+                "    pm.expect(jsonData.user).to.have.property('name');",
+                "    pm.expect(jsonData.user).to.have.property('email');",
+                "});",
+                "",
+                "pm.test(\"Inserted user data is correct\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.user.name).to.eql(\"John Doe\");",
+                "    pm.expect(jsonData.user.email).to.eql(\"john.doe@example.com\");",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Get All Users",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "https://i4vbr4vudzcjg3i2pnomm6bvla0nittj.lambda-url.eu-central-1.on.aws/users",
+            "protocol": "https",
+            "host": [
+              "i4vbr4vudzcjg3i2pnomm6bvla0nittj",
+              "lambda-url",
+              "eu-central-1",
+              "on",
+              "aws"
+            ],
+            "path": [
+              "users"
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Response has users array\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData).to.have.property('users');",
+                "    pm.expect(jsonData.users).to.be.an('array');",
+                "});",
+                "",
+                "pm.test(\"Users array is not empty\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.users.length).to.be.greaterThan(0);",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Invalid Path Test",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Invalid Test\"\n}"
+          },
+          "url": {
+            "raw": "https://i4vbr4vudzcjg3i2pnomm6bvla0nittj.lambda-url.eu-central-1.on.aws/invalid",
+            "protocol": "https",
+            "host": [
+              "i4vbr4vudzcjg3i2pnomm6bvla0nittj",
+              "lambda-url",
+              "eu-central-1",
+              "on",
+              "aws"
+            ],
+            "path": [
+              "invalid"
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test(\"Status code is 400\", function () {",
+                "    pm.response.to.have.status(400);",
+                "});",
+                "",
+                "pm.test(\"Error message is correct\", function () {",
+                "    var responseText = pm.response.text();",
+                "    pm.expect(responseText).to.include('Unsupported path \"/invalid\" for POST method');",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Unsupported Method Test",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Test User\"\n}"
+          },
+          "url": {
+            "raw": "https://i4vbr4vudzcjg3i2pnomm6bvla0nittj.lambda-url.eu-central-1.on.aws/users",
+            "protocol": "https",
+            "host": [
+              "i4vbr4vudzcjg3i2pnomm6bvla0nittj",
+              "lambda-url",
+              "eu-central-1",
+              "on",
+              "aws"
+            ],
+            "path": [
+              "users"
+            ]
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "pm.test(\"Status code is 400\", function () {",
+                "    pm.response.to.have.status(400);",
+                "});",
+                "",
+                "pm.test(\"Error message is correct\", function () {",
+                "    var responseText = pm.response.text();",
+                "    pm.expect(responseText).to.include('Unsupported method \"PUT\"');",
+                "});"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ]
+      }
+    ]
+  }
