@@ -219,5 +219,6 @@ export const handler = async (event) => {
     headers,
   };
 };
+```
 
 This setup ensures a secure connection between AWS Lambda and your RDS instance, with best practices for environment variables, VPC, and API exposure.
